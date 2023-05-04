@@ -53,8 +53,8 @@ jobs:
           repos=${{steps.repo.outputs.repoList_ALL}}
           arr=(${repos//,/ })
           length=${#arr[@]}
-          
-          { for((i=0;i<10;i++));do
+          {
+            for((i=0;i<length;i++));do
               repoName=https://github.com/laiyoufafa/${arr[$i]}
               echo "time:${i}    repos_url:${repoName} "
               index=0
@@ -65,13 +65,28 @@ jobs:
                 export GH_TOKEN=${{ secrets.TEST2 }}
               else
                 export GH_TOKEN=${{ secrets.TEST3 }}
-              str=""
-              str=$(scorecard --repo $repoName --format json) || (sleep 60s && str=$(scorecard --repo $repoName --format json)) || (sleep 60s && str=$(scorecard --repo $repoName --format json)) || str=$(echo "faild on ${repoName}")
-              echo $str >> $TARGET_FILEe
-              echo "name:first  ${repoName} finished"
-              sleep 5s
+              str=$i
+              echo i
             done
-          }& 
+          }&
+          
+          #    repoName=https://github.com/laiyoufafa/${arr[$i]}
+          #    echo "time:${i}    repos_url:${repoName} "
+          #    index=0
+          #    ((tmp=i/8,index=tmp%3))
+          #    if [ $index -eq 0 ];then
+          #      export GH_TOKEN=${{ secrets.TEST1 }}
+          #    elif [ $index -eq 1 ];then
+          #      export GH_TOKEN=${{ secrets.TEST2 }}
+          #    else
+          #      export GH_TOKEN=${{ secrets.TEST3 }}
+          #    str=""
+          #    str=$(scorecard --repo $repoName --format json) || (sleep 60s && str=$(scorecard --repo $repoName --format json)) || (sleep 60s && str=$(scorecard --repo $repoName --format json)) || str=$(echo "faild on ${repoName}")
+          #    echo $str >> $TARGET_FILEe
+          #    echo "name:first  ${repoName} finished"
+          #    sleep 5s
+          #  done
+          #}& 
           wait
           gh auth setup-git -h github.com
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
