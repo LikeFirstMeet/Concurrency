@@ -76,9 +76,8 @@ jobs:
                 export GH_TOKEN=${{ secrets.TEST3 }}
               str=""
               str=$(scorecard --repo $repoName --format json) || (sleep 60s && str=$(scorecard --repo $repoName --format json)) || (sleep 60s && str=$(scorecard --repo $repoName --format json)) || str=$(echo "faild on ${repoName}")
-              echo $str >> $TARGET_FILE 
+              echo $str >> $TARGET_FILE
               echo "name:first  ${repoName} finished"
-              sleep 5s
             done
           }&
           
