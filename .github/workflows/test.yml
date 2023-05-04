@@ -57,7 +57,6 @@ jobs:
         
           {
             for((i=0;i<length;i=i+8));do
-            done
               repoName=https://github.com/laiyoufafa/${arr[$i]}
               echo "time:${i}    repos_url:${repoName} "
               index=0
