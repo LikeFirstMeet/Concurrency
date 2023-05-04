@@ -54,8 +54,8 @@ jobs:
           arr=(${repos//,/ })
           length=${#arr[@]}
           {
-            for((i=0;i<length;i=i+8))
-              repoName="https://github.com/laiyoufafa/${arr[$i]}"
+            for((i=0;i<length;i=i+8));do
+              repoName=https://github.com/laiyoufafa/${arr[$i]}
               echo "time:${i}    repos_url:${repoName} "
               index=0
               ((tmp=i/8,index=tmp%3))
