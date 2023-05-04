@@ -55,8 +55,6 @@ jobs:
           length=${#arr[@]}
           {
             for((i=0;i<length;i=i+8));do
-              repoName=https://github.com/laiyoufafa/${arr[$i]}
-              echo "time:${i}    repos_url:${repoName} "
               index=0
               ((tmp=i/8,index=tmp%3))
               if [ $index -eq 0 ];then
@@ -69,6 +67,9 @@ jobs:
                 export GH_TOKEN=${{ secrets.TEST3 }}
                 echo "第三个"
               fi
+              
+              repoName=https://github.com/laiyoufafa/${arr[$i]}
+              echo "time:${i}    repos_url:${repoName}  length:${length}"
               str=""
               str=$(scorecard --repo $repoName --format json) || (sleep 60s && str=$(scorecard --repo $repoName --format json)) || (sleep 60s && str=$(scorecard --repo $repoName --format json)) || str=$(echo "faild on ${repoName}")
               echo $str >> $TARGET_FILE
