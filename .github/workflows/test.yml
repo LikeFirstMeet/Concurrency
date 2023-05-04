@@ -74,8 +74,9 @@ jobs:
               echo $str >> $TARGET_FILE
               echo "name:first  ${repoName} finished"
               sleep 5s
+              wait
             done
-          }& 
+          }&
           wait
           gh auth setup-git -h github.com
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
