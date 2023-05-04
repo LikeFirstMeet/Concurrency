@@ -26,13 +26,6 @@ jobs:
         run: |
           wget https://github.com/ossf/scorecard/releases/download/v4.10.5/scorecard_4.10.5_linux_amd64.tar.gz
           tar -zxvf scorecard_4.10.5_linux_amd64.tar.gz
-          cp scorecard-linux-amd64 scorecard-first
-          cp scorecard-linux-amd64 scorecard-second
-          cp scorecard-linux-amd64 scorecard-third
-          cp scorecard-linux-amd64 scorecard-fourth
-          cp scorecard-linux-amd64 scorecard-fifth
-          cp scorecard-linux-amd64 scorecard-sixth
-          cp scorecard-linux-amd64 scorecard-seventh
           mv scorecard-linux-amd64 scorecard
           
           
@@ -64,6 +57,7 @@ jobs:
         
           {
             for((i=0;i<length;i=i+8));do
+            done
               repoName=https://github.com/laiyoufafa/${arr[$i]}
               echo "time:${i}    repos_url:${repoName} "
               index=0
@@ -76,9 +70,10 @@ jobs:
                 export GH_TOKEN=${{ secrets.TEST3 }}
               str=""
               str=$(scorecard --repo $repoName --format json) || (sleep 60s && str=$(scorecard --repo $repoName --format json)) || (sleep 60s && str=$(scorecard --repo $repoName --format json)) || str=$(echo "faild on ${repoName}")
-              echo $str >> $TARGET_FILE
+              echo $str >> $TARGET_FILEe
               echo "name:first  ${repoName} finished"
-            done
+              sleep 5s
+             done
           }&
           
                     
