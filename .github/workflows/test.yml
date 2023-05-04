@@ -54,21 +54,13 @@ jobs:
           arr=(${repos//,/ })
           length=${#arr[@]}
           {
-            for((i=0;i<length;i++));do
-              repoName=https://github.com/laiyoufafa/${arr[$i]}
-              echo "time:${i}    repos_url:${repoName} "
-              index=0
-              ((tmp=i/8,index=tmp%3))
-              if [ $index -eq 0 ];then
-                export GH_TOKEN=${{ secrets.TEST1 }}
-              elif [ $index -eq 1 ];then
-                export GH_TOKEN=${{ secrets.TEST2 }}
-              else
-                export GH_TOKEN=${{ secrets.TEST3 }}
-              str=$i
-              echo i
+            for((i=0;i<length;i=i+8));do
+              index=$i
+              ((index=index/3))
+              echo index
             done
           }&
+          
           
           #    repoName=https://github.com/laiyoufafa/${arr[$i]}
           #    echo "time:${i}    repos_url:${repoName} "
