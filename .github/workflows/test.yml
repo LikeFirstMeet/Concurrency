@@ -53,13 +53,8 @@ jobs:
           repos=${{steps.repo.outputs.repoList_ALL}}
           arr=(${repos//,/ })
           length=${#arr[@]}
+          
           { for((i=0;i<10;i++));do
-            echo $i
-            done
-          }&
-        
-          {
-            for((i=0;i<length;i=i+8));do
               repoName=https://github.com/laiyoufafa/${arr[$i]}
               echo "time:${i}    repos_url:${repoName} "
               index=0
@@ -75,12 +70,8 @@ jobs:
               echo $str >> $TARGET_FILEe
               echo "name:first  ${repoName} finished"
               sleep 5s
-             done
-          }&
-          
-                    
-          
-          
+            done
+          }& 
           wait
           gh auth setup-git -h github.com
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
