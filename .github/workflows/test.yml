@@ -54,31 +54,28 @@ jobs:
           arr=(${repos//,/ })
           length=${#arr[@]}
           {
-            for((i=0;i<length;i=i+8));do
-              index=$i
-              ((index=index/3))
-              echo index
+            for((i=0;i<length;i=i+8))
+              repoName=https://github.com/laiyoufafa/${arr[$i]}
+              echo "time:${i}    repos_url:${repoName} "
+              index=0
+              ((tmp=i/8,index=tmp%3))
+              if [ $index -eq 0 ];then
+                export GH_TOKEN=${{ secrets.TEST1 }}
+                echo "第一个"
+              elif [ $index -eq 1 ];then
+                export GH_TOKEN=${{ secrets.TEST2 }}
+                echo "第二个"
+              else
+                export GH_TOKEN=${{ secrets.TEST3 }}
+                echo "第三个"
+              fi
+              str=""
+              str=$(scorecard --repo $repoName --format json) || (sleep 60s && str=$(scorecard --repo $repoName --format json)) || (sleep 60s && str=$(scorecard --repo $repoName --format json)) || str=$(echo "faild on ${repoName}")
+              echo $str >> $TARGET_FILEe
+              echo "name:first  ${repoName} finished"
+              sleep 5s
             done
-          }&
-          
-          
-          #    repoName=https://github.com/laiyoufafa/${arr[$i]}
-          #    echo "time:${i}    repos_url:${repoName} "
-          #    index=0
-          #    ((tmp=i/8,index=tmp%3))
-          #    if [ $index -eq 0 ];then
-          #      export GH_TOKEN=${{ secrets.TEST1 }}
-          #    elif [ $index -eq 1 ];then
-          #      export GH_TOKEN=${{ secrets.TEST2 }}
-          #    else
-          #      export GH_TOKEN=${{ secrets.TEST3 }}
-          #    str=""
-          #    str=$(scorecard --repo $repoName --format json) || (sleep 60s && str=$(scorecard --repo $repoName --format json)) || (sleep 60s && str=$(scorecard --repo $repoName --format json)) || str=$(echo "faild on ${repoName}")
-          #    echo $str >> $TARGET_FILEe
-          #    echo "name:first  ${repoName} finished"
-          #    sleep 5s
-          #  done
-          #}& 
+          }& 
           wait
           gh auth setup-git -h github.com
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
